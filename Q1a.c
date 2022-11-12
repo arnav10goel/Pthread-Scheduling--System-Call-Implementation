@@ -9,21 +9,18 @@
 void countA(){
     long long int i;
     for(i=0;i < (pow(2,32)-1);i++){
-        int a = 'A';
     }
 }
 
 void countB(){
     long long int i;
     for(i=0; i < (pow(2,32)-1);i++){
-        int a = 'B';
     }
 }
 
 void countC(){
     long long int i;
     for(i=0; i < (pow(2,32)-1);i++){
-        int a = 'A';
     }
 }
 
