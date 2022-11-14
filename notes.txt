@@ -1,0 +1,8 @@
+Q1.1
+Before creation set scheduling policy,
+For SCHED_OTHER -> set NICE Values (-19 to 20)
+For SCHED_FIFO and SCHED_RR -> Realtime values (0 to 99)
+
+Do it on Artix VM
+Use Realtime in the clock function
+FORK the 3 child processes simultaneously
