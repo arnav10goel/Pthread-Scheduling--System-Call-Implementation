@@ -1,0 +1,22 @@
+--- edited_kernel/linux-5.19.8/kernel/sys.c	2022-11-14 04:47:20.573363215 +0530
++++ stock_kernel/linux-5.19.8/kernel/sys.c	2022-11-13 01:25:45.829989859 +0530
+@@ -426,18 +426,7 @@
+  * setgid() is implemented like SysV w/ SAVED_IDS
+  *
+  * SMP: Same implicit races as above.
+-
+-*/
+-
+-SYSCALL_DEFINE0(kernel_2d_memcpy)
+-{
+-	printk(KERN_INFO "Invoked Hello System Call");
+-	return 0;
+-}
+-/*TEST SYSTEN CALL*/
+-
+-
+-
++ */
+ long __sys_setgid(gid_t gid)
+ {
+ 	struct user_namespace *ns = current_user_ns();
