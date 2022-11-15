@@ -72,9 +72,10 @@ int main()
                 }
             }
         }
-        double resA = ( stopA.tv_nsec - startA.tv_nsec );
-        double resB = ( stopB.tv_nsec - startB.tv_nsec );
-        double resC = ( stopC.tv_nsec - startC.tv_nsec );
+        double resA = (startA.tv_sec - stopA.tv_sec) +(( stopA.tv_nsec - startA.tv_nsec ) / 1E9);
+        double resB = (startB.tv_sec - stopB.tv_sec) +(( stopB.tv_nsec - startB.tv_nsec ) / 1E9);
+        double resC = (startC.tv_sec - stopC.tv_sec) +(( stopC.tv_nsec - startC.tv_nsec ) / 1E9);
+
         printf("Child Process 1: %f\n", resA);
         printf("Child Process 2: %f\n", resB);
         printf("Child Process 3: %f\n", resC);
