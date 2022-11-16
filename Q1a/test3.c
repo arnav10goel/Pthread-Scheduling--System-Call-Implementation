@@ -1,82 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <time.h>
+#include <math.h>
 
-int main()
-{
-    int pid, pid2, pid3;
-    struct timespec startA, stopA;
-    struct timespec startB, stopB;
-    struct timespec startC, stopC;
-    int a = 0;
-    pid = fork();
-    if(pid == 0)
-    {
-        if( clock_gettime( CLOCK_REALTIME, &startA) == -1 ) {
-          perror( "clock gettime" );
-          exit( EXIT_FAILURE );
-        }
-        printf("Child process 1\n");
-        a++;
-        
-    }
-    else if(pid < 0){
-        printf("Fork Failed\n");
-    }
-    else
-    {
-        pid2 = fork();
-        if(pid2 < 0){
-            printf("Fork failed\n");
-        }
-        else if(pid2 == 0){
-            if( clock_gettime( CLOCK_REALTIME, &startB) == -1 ) {
-            perror( "clock gettime" );
-            exit( EXIT_FAILURE );
-            }
-            printf("Child process 2\n");
-            a++;
-        }
-        else{
-            pid3 = fork();
-            if(pid3 < 0){
-                printf("Fork failed\n");
-            }
-            else if(pid3 == 0){
-                if( clock_gettime( CLOCK_REALTIME, &startC) == -1 ) {
-                perror( "clock gettime" );
-                exit( EXIT_FAILURE );
-                }
-                printf("Child process 3\n");
-                a++;
-            }
-            else{
-                waitpid(pid3, NULL, WNOHANG);
-                if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
-                    perror( "clock gettime" );
-                    exit( EXIT_FAILURE );
-                }
-            }
-            waitpid(pid2, NULL, WNOHANG);
-            if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
-                perror( "clock gettime" );
-                exit( EXIT_FAILURE );
-            }
-        }
-        waitpid(pid, NULL, WNOHANG);
-        if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
+int main(int argc, char **argv) {
+    int run_time[3];    // Variable to save the running time of the children process
+    struct timespec start[3];        // Variable to help measure the actual time
+    struct timespec stop[3];
+    pid_t children[3];
+    int status;
+    int i;
+
+    for ( i = 0; i < 3; i++ ) {
+        // Start time of child process
+        if( clock_gettime( CLOCK_REALTIME, &start[i]) == -1 ) {
             perror( "clock gettime" );
             exit( EXIT_FAILURE );
         }
-        double resA = ( stopA.tv_nsec - startA.tv_nsec );
-        double resB = ( stopB.tv_nsec - startB.tv_nsec );
-        double resC = ( stopC.tv_nsec - startC.tv_nsec );
-        printf("Child Process 1: %f\n", resA);
-        printf("Child Process 2: %f\n", resB);
-        printf("Child Process 3: %f\n", resC);
+        children[i] = fork();
+        if( children[i] == 0 )  {
+            for(long long int i=0;i < (pow(2,32)-1);i++){
+            }
+	    execl("/bin/ls", "ls", NULL);
+        }
     }
-    return 0;
+    for ( i = 0; i < 3; i++ ) {   // Waiting all 3 children process finish
+        waitpid(children[i], &status, 0);
+        if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
+            perror( "clock gettime" );
+            exit( EXIT_FAILURE );
+        }
+        if (WIFEXITED(status)) {
+            run_time[i] = WEXITSTATUS(status); // use the low-order 8 bits from the exit code
+        } else {
+            run_time[i] = -1; // unknown run time
+        }
+    }
+
+    for(int i = 0; i < 3; i++){
+        double time = (stop[i].tv_sec - start[i].tv_sec) + (stop[i].tv_nsec - start[i].tv_nsec) / 1000000000.0;
+        printf("%f\n", time);
+    }
+
 }
