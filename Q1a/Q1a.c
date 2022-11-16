@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <math.h>
 
-#define BILLION  1000000000L;
+#define BILLION  1000000000;
 
 struct timespec startA, stopA;
 struct timespec startB, stopB;
