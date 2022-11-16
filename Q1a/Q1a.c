@@ -6,8 +6,6 @@
 #include <pthread.h>
 #include <math.h>
 
-#define BILLION  1000000000;
-
 struct timespec startA, stopA;
 struct timespec startB, stopB;
 struct timespec startC, stopC;
@@ -17,6 +15,8 @@ void countA(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
+    struct sched_param param = { .sched_priority = 2 };
+    pthread_setschedparam(pthread_self(), SCHED_OTHER, &param); 
     long long int i;
     for(i=0;i < (pow(2,32)-1);i++){
     }
@@ -27,6 +27,8 @@ void countB(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
+    struct sched_param param = { .sched_priority = 60 };
+    pthread_setschedparam(pthread_self(), SCHED_FIFO, &param); 
     long long int i;
     for(i=0; i < (pow(2,32)-1);i++){
     }
@@ -38,6 +40,9 @@ void countC(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
+    struct sched_param param = { .sched_priority = 21 };
+    pthread_setschedparam(pthread_self(), SCHED_RR, &param); 
+    
     long long int i;
     for(i=0; i < (pow(2,32)-1);i++){
     }
@@ -70,9 +75,9 @@ int main(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    resA = (stopA.tv_sec - startA.tv_sec) + ( stopA.tv_nsec - startA.tv_nsec ) / BILLION;
-    resB = (stopB.tv_sec - startB.tv_sec) + ( stopB.tv_nsec - startB.tv_nsec ) / BILLION;
-    resC = (stopC.tv_sec - startC.tv_sec) + ( stopC.tv_nsec - startC.tv_nsec ) / BILLION;
+    resA = (stopA.tv_sec - startA.tv_sec) + ( stopA.tv_nsec - startA.tv_nsec ) / 1000000000.0;
+    resB = (stopB.tv_sec - startB.tv_sec) + ( stopB.tv_nsec - startB.tv_nsec ) / 1000000000.0;
+    resC = (stopC.tv_sec - startC.tv_sec) + ( stopC.tv_nsec - startC.tv_nsec ) / 1000000000.0;
     
     printf("Thread A: %f\n", resA);
     printf("Thread B: %f\n", resB);
