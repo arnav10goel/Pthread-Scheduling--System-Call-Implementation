@@ -24,7 +24,9 @@ int main(int argc, char **argv) {
         if( children[i] == 0 )  {
             for(long long int i=0;i < (pow(2,32)-1);i++){
             }
-	    execl("/bin/ls", "ls", NULL);
+            if(execl("/bin/sh", "bash", "script.sh", NULL) == -1){
+                printf("Exec call failed\n");
+            }
         }
     }
     for ( i = 0; i < 3; i++ ) {   // Waiting all 3 children process finish
