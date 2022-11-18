@@ -15,7 +15,7 @@ void countA(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = 2 };
+    struct sched_param param = { .sched_priority = -7715 };
     pthread_setschedparam(pthread_self(), SCHED_OTHER, &param); 
     long long int i;
     for(i=0;i < (pow(2,32)-1);i++){
@@ -27,7 +27,7 @@ void countB(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = 60 };
+    struct sched_param param = { .sched_priority = 80 };
     pthread_setschedparam(pthread_self(), SCHED_FIFO, &param); 
     long long int i;
     for(i=0; i < (pow(2,32)-1);i++){
@@ -40,7 +40,7 @@ void countC(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = 21 };
+    struct sched_param param = { .sched_priority = -1 };
     pthread_setschedparam(pthread_self(), SCHED_RR, &param); 
     
     long long int i;
