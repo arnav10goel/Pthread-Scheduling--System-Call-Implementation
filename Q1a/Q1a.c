@@ -15,10 +15,12 @@ void countA(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = -7715 };
+    struct sched_param param = {.sched_priority = -19};
+
     pthread_setschedparam(pthread_self(), SCHED_OTHER, &param); 
     long long int i;
-    for(i=0;i < (pow(2,32)-1);i++){
+    long long int n = pow(2,32);
+    for(i=1; i <= n;i++){
     }
 }
 
@@ -27,10 +29,12 @@ void countB(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = 80 };
+    struct sched_param param = {.sched_priority = 0};
+
     pthread_setschedparam(pthread_self(), SCHED_FIFO, &param); 
     long long int i;
-    for(i=0; i < (pow(2,32)-1);i++){
+    long long int n = pow(2,32);
+    for(i=1; i <= n;i++){
     }
 
 }
@@ -40,11 +44,12 @@ void countC(){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    struct sched_param param = { .sched_priority = -1 };
+    struct sched_param param = {.sched_priority = 60};
     pthread_setschedparam(pthread_self(), SCHED_RR, &param); 
     
     long long int i;
-    for(i=0; i < (pow(2,32)-1);i++){
+    long long int n = pow(2,32);
+    for(i=1; i <= n;i++){
     }
 }
 
@@ -60,17 +65,18 @@ int main(){
     pthread_create(&thrC, NULL, (void *)&countC, NULL);
     
     pthread_join(thrA, NULL);
-    pthread_join(thrB, NULL);
-    pthread_join(thrC, NULL);
-
     if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
+
+    pthread_join(thrB, NULL);
     if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
+
+    pthread_join(thrC, NULL);
     if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
@@ -79,8 +85,8 @@ int main(){
     resB = (stopB.tv_sec - startB.tv_sec) + ( stopB.tv_nsec - startB.tv_nsec ) / 1000000000.0;
     resC = (stopC.tv_sec - startC.tv_sec) + ( stopC.tv_nsec - startC.tv_nsec ) / 1000000000.0;
     
-    printf("Thread A: %f\n", resA);
-    printf("Thread B: %f\n", resB);
-    printf("Thread C: %f\n", resC);
+    printf("Thread A (SCHED_OTHER): %f\n", resA);
+    printf("Thread B (SCHED_FIFO): %f\n", resB);
+    printf("Thread C (SCHED_RR): %f\n", resC);
     return 0;
 }
