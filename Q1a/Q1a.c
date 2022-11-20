@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <math.h>
+#include <sched.h>
 
 struct timespec startA, stopA;
 struct timespec startB, stopB;
@@ -27,11 +28,11 @@ void countA(int priority){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    // struct sched_param param1;
-    // int policy1;
-    // int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
-    int priority2 = getpriority(PRIO_PROCESS, 0);
-    printf("Thread A priority: %d\n", priority2);
+    struct sched_param param1;
+    int policy1;
+    int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
+    //int priority2 = getpriority(PRIO_PROCESS, 0);
+    printf("Thread A priority: %d\n", param1.sched_priority);
 }
 
 void countB(int priority){
