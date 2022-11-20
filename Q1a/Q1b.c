@@ -11,6 +11,7 @@
 int main(int argc, char **argv) {
     struct timespec start[3], stop[3];
     int policy[3] = {SCHED_OTHER, SCHED_FIFO, SCHED_RR};
+    char* paths[3] = {"script1.sh", "script2.sh", "script3.sh"};
     pid_t children[3];
 
     for (int i = 0; i < 3; i++ ) {
@@ -23,7 +24,7 @@ int main(int argc, char **argv) {
             long long int n = (pow(2,32)-1);
             for(long long int i = 1; i <= n;i++){
             }
-            if(execl("/bin/sh", "bash", "script.sh", NULL) == -1){
+            if(execl("/bin/sh", "bash", paths[i], NULL) == -1){
                 printf("Exec call failed\n");
             }
         }
