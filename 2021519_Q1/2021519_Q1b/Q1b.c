@@ -21,17 +21,40 @@ int main(int argc, char **argv) {
         }
         children[i] = fork();
         if(children[i] == 0){
+            if(i == 0){
+                int ret = nice(10);
+                if(ret == -1){
+                    perror("nice");
+                    exit(EXIT_FAILURE);
+                }
+                else{
+                    printf("Nice value of Child Process %d (SCHED_OTHER) is: %d", (i+1), ret);
+                }
+            }
+            else{
+                struct sched_param param;
+                param.sched_priority = 10;
+                int ret = sched_setscheduler(0, policy[i], &param);
+                if(ret == -1){
+                    perror("sched_setscheduler");
+                    exit(EXIT_FAILURE);
+                }
+                else{
+                    printf("Policy of Child Process %d is: %d", (i+1), policy[i]);
+                    printf("Priority of Child Process %d is: %d", (i+1), param.sched_priority);
+                }
+            }
             long long int n = (pow(2,32)-1);
             for(long long int i = 1; i <= n;i++){
             }
-            if(execl("/bin/sh", "bash", paths[i], NULL) == -1){
+            if(execl("/bin/ls", "ls", NULL) == -1){
                 printf("Exec call failed\n");
             }
         }
     }
-    int ret;
+    int* test = malloc(sizeof(int));
     for (int i = 0; i < 3; i++ ) {   //Using waitpid() to wait for a particular child process and 
-        waitpid(children[i], &ret, 0);
+        waitpid(children[i], test, 0);
         if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
             perror( "clock gettime" );
             exit( EXIT_FAILURE );
