@@ -16,9 +16,9 @@ void countA(int priority){
       perror( "clock gettime" );
       exit( EXIT_FAILURE );
     }
-    //int ret = setpriority(PRIO_PROCESS, 0, priority);
+    
     int rc_set = nice(priority); 
-    printf("RC SET A: %i\n", rc_set);
+    printf("Nice Value for Thread A: %i\n", rc_set);
     long long int i;
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
@@ -30,9 +30,9 @@ void countA(int priority){
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
-    //int priority2 = getpriority(PRIO_PROCESS, 0);
+    
     printf("Thread A priority: %d\n", param1.sched_priority);
-    printf("RC GET A: %i\n", rc);
+    printf("Thread A policy: %d\n", policy1);
 }
 
 void countB(int priority){
