@@ -33,6 +33,7 @@ void countA(int priority){
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
     //int priority2 = getpriority(PRIO_PROCESS, 0);
     printf("Thread A priority: %d\n", param1.sched_priority);
+    printf("RC A: %i", rc);
 }
 
 void countB(int priority){

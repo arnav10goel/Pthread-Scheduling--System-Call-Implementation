@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
         }
     }
     int ret;
-    for (int i = 0; i < 3; i++ ) {   // Waiting all 3 children process finish
+    for (int i = 0; i < 3; i++ ) {   //Using waitpid() to wait for a particular child process and 
         waitpid(children[i], &ret, 0);
         if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
             perror( "clock gettime" );
