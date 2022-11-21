@@ -18,8 +18,8 @@ void countA(int priority){
     }
     struct sched_param param = {.sched_priority = priority};
     //int ret = setpriority(PRIO_PROCESS, 0, priority);
-    pthread_setschedparam(pthread_self(), SCHED_OTHER, &param); 
-
+    int rc_set = pthread_setschedparam(pthread_self(), SCHED_OTHER, &param); 
+    printf("RC SET A: %i\n", rc_set);
     long long int i;
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
@@ -33,7 +33,7 @@ void countA(int priority){
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
     //int priority2 = getpriority(PRIO_PROCESS, 0);
     printf("Thread A priority: %d\n", param1.sched_priority);
-    printf("RC A: %i", rc);
+    printf("RC GET A: %i\n", rc);
 }
 
 void countB(int priority){
