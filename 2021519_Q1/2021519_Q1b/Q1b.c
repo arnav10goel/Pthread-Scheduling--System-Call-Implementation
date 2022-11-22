@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    if( clock_gettime( CLOCK_REALTIME, &start[0]) == -1 ) {
+    if( clock_gettime( CLOCK_REALTIME, &start[1]) == -1 ) {
         perror( "clock gettime" );
         exit( EXIT_FAILURE );
     }
