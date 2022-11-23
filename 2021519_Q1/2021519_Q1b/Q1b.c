@@ -97,9 +97,8 @@ int main(int argc, char **argv) {
         int policy3 = sched_getscheduler(getpid());
         printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
         printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
-        printf("Return value of 3rd get_param is: %d\n", prio3);
 	    fflush(stdout);
-        if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
+        if(execl("/bin/sh", "bash", paths[2], NULL) == -1){
             printf("Exec call failed\n");
         }
     }
