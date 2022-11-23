@@ -9,6 +9,7 @@
  #
  # Due to a historical design error, certain syscalls are numbered differently
 
+
 --- stock_kernel/linux-5.19.8/Makefile	2022-09-08 14:54:08.000000000 +0530
 +++ edited_kernel/linux-5.19.8/Makefile	2022-11-24 06:06:05.489977591 +0530
 @@ -1100,7 +1100,7 @@
