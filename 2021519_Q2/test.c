@@ -17,6 +17,13 @@ int main()
 
 	float source_matrix[row_count][col_count];
 	float dest_matrix[row_count][col_count];
+
+	for(int i = 0; i < row_count; i++){
+		for(int j = 0; j < col_count; j++){
+			printf("Enter the value for row %i and column %i: ", i, j);
+			scanf("%f", &source_matrix[i][j]);
+		}
+	}
 	
 	printf("Here is the source matrix:\n");
 	for(int i = 0; i < row_count; i++){
