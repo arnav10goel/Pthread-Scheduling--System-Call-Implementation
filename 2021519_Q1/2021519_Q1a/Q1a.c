@@ -23,16 +23,18 @@ void countA(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
-      perror( "clock gettime" );
-      exit( EXIT_FAILURE );
-    }
+
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
     
     printf("Thread A priority: %d\n", param1.sched_priority);
     printf("Thread A policy: %d\n", policy1);
+
+    if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
 }
 
 void countB(int priority){
@@ -47,15 +49,16 @@ void countB(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
-      perror( "clock gettime" );
-      exit( EXIT_FAILURE );
-    }
+    
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
     printf("Thread B priority: %d\n", param1.sched_priority);
     printf("Thread B policy: %d\n", policy1);
+    if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
 }
 
 void countC(int priority){
@@ -70,15 +73,15 @@ void countC(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
-      perror( "clock gettime" );
-      exit( EXIT_FAILURE );
-    }
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
     printf("Thread C priority: %d\n", param1.sched_priority);
     printf("Thread C policy: %d\n", policy1);
+    if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
 }
 
 int main(){
