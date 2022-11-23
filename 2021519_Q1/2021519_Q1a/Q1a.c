@@ -23,10 +23,10 @@ void countA(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    // if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
-    //   perror( "clock gettime" );
-    //   exit( EXIT_FAILURE );
-    // }
+    if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
@@ -47,10 +47,10 @@ void countB(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    // if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
-    //   perror( "clock gettime" );
-    //   exit( EXIT_FAILURE );
-    // }
+    if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
@@ -70,10 +70,10 @@ void countC(int priority){
     long long int n = pow(2,32);
     for(i=1; i <= n;i++){
     }
-    // if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
-    //   perror( "clock gettime" );
-    //   exit( EXIT_FAILURE );
-    // }
+    if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
+      perror( "clock gettime" );
+      exit( EXIT_FAILURE );
+    }
     struct sched_param param1;
     int policy1;
     int rc = pthread_getschedparam(pthread_self(), &policy1, &param1);
@@ -113,22 +113,9 @@ int main(){
         pthread_create(&thrC, NULL, (void *)&countC, (void*)priority_c);
         
         pthread_join(thrA, NULL);
-        if( clock_gettime( CLOCK_REALTIME, &stopA) == -1 ) {
-          perror( "clock gettime" );
-          exit( EXIT_FAILURE );
-        }
-
         pthread_join(thrB, NULL);
-        if( clock_gettime( CLOCK_REALTIME, &stopB) == -1 ) {
-          perror( "clock gettime" );
-          exit( EXIT_FAILURE );
-        }
-
         pthread_join(thrC, NULL);
-        if( clock_gettime( CLOCK_REALTIME, &stopC) == -1 ) {
-          perror( "clock gettime" );
-          exit( EXIT_FAILURE );
-        }
+        
         resA = (stopA.tv_sec - startA.tv_sec) + ( stopA.tv_nsec - startA.tv_nsec ) / 1000000000.0;
         resB = (stopB.tv_sec - startB.tv_sec) + ( stopB.tv_nsec - startB.tv_nsec ) / 1000000000.0;
         resC = (stopC.tv_sec - startC.tv_sec) + ( stopC.tv_nsec - startC.tv_nsec ) / 1000000000.0;
