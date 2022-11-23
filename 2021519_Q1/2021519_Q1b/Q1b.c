@@ -13,6 +13,14 @@ int main(int argc, char **argv) {
     char* paths[3] = {"script1.sh", "script2.sh", "script3.sh"};
     pid_t children[3];
     struct sched_param param_fifo, param_rr;
+
+    int nice_val, sched_fifo_priority, sched_rr_priority;
+    printf("Enter nice value for Process A - SCHED_OTHER (value b/w -20 and 19): ");
+    scanf("%d", &nice_val);
+    printf("Enter priority for Process B - SCHED_FIFO (value b/w 1 and 99): ");
+    scanf("%d", &sched_fifo_priority);
+    printf("Enter priority for Process C - SCHED_RR (value b/w 1 and 99): ");
+    scanf("%d", &sched_rr_priority);
     
     if( clock_gettime( CLOCK_REALTIME, &start[0]) == -1 ) {
         perror( "clock gettime" );
@@ -27,12 +35,11 @@ int main(int argc, char **argv) {
         }
         else{
             printf("Nice value of Child Process 1 (SCHED_OTHER) is: %d\n", ret);
-        
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
-	fflush(stdout);
+	    fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -58,7 +65,7 @@ int main(int argc, char **argv) {
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
-	fflush(stdout);
+	    fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -78,14 +85,13 @@ int main(int argc, char **argv) {
         }
         else{
             printf("Policy of Child Process 3 is: %d\n", policy[2]);
-
             printf("Priority of Child Process 3 is: %d\n", param_rr.sched_priority);
-            fflush(stdout);
+
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
-	fflush(stdout);
+	    fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
