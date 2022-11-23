@@ -20,21 +20,19 @@ int main(int argc, char **argv) {
     }
     children[0] = fork();
     if(children[0] == 0){
-	printf("HI BEFORE NICE");
         int ret = nice(-6);
-	printf("HI AFTER NICE");
         if(ret == -1){
             printf("Error in nice\n");
-            fflush(stdout);
+           
         }
         else{
-            printf("Nice value of Child Process 1 (SCHED_OTHER) is: %d", ret);
-            fflush(stdout);
+            printf("Nice value of Child Process 1 (SCHED_OTHER) is: %d\n", ret);
+        
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
-	printf("HI BEFORE EXEC");
+	fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -53,14 +51,14 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
         else{
-            printf("Policy of Child Process 2 is: %d", policy[1]);
-            fflush(stdout);
-            printf("Priority of Child Process 2 is: %d", param_fifo.sched_priority);
-            fflush(stdout);
+            printf("Policy of Child Process 2 is: %d\n", policy[1]);
+            printf("Priority of Child Process 2 is: %d\n", param_fifo.sched_priority);
+           
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
+	fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -79,14 +77,15 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
         else{
-            printf("Policy of Child Process 3 is: %d", policy[2]);
-            fflush(stdout);
-            printf("Priority of Child Process 3 is: %d", param_rr.sched_priority);
+            printf("Policy of Child Process 3 is: %d\n", policy[2]);
+
+            printf("Priority of Child Process 3 is: %d\n", param_rr.sched_priority);
             fflush(stdout);
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
+	fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
