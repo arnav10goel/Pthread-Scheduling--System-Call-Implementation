@@ -22,11 +22,12 @@ int main(int argc, char **argv) {
     if(children[0] == 0){
         int ret = nice(10);
         if(ret == -1){
-            perror("nice");
-            exit(EXIT_FAILURE);
+            printf("Error in nice\n");
+            fflush(stdout);
         }
         else{
             printf("Nice value of Child Process 1 (SCHED_OTHER) is: %d", ret);
+            fflush(stdout);
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
@@ -50,7 +51,9 @@ int main(int argc, char **argv) {
         }
         else{
             printf("Policy of Child Process 2 is: %d", policy[1]);
+            fflush(stdout);
             printf("Priority of Child Process 2 is: %d", param_fifo.sched_priority);
+            fflush(stdout);
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
@@ -74,7 +77,9 @@ int main(int argc, char **argv) {
         }
         else{
             printf("Policy of Child Process 3 is: %d", policy[2]);
+            fflush(stdout);
             printf("Priority of Child Process 3 is: %d", param_rr.sched_priority);
+            fflush(stdout);
         }
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
