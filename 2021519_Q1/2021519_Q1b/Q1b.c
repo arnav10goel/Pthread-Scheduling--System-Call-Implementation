@@ -58,59 +58,64 @@ int main(int argc, char **argv) {
         perror( "clock gettime" );
         exit( EXIT_FAILURE );
     }
-    children[1] = fork();
-    if(children[1] == 0){
-        param_fifo.sched_priority = sched_fifo_priority;
-        int ret = sched_setscheduler(getpid(), policy[1], &param_fifo);
-        if(ret == -1){
-            perror("sched_setscheduler");
-            exit(EXIT_FAILURE);
-        }
+    // children[1] = fork();
+    // if(children[1] == 0){
+    //     param_fifo.sched_priority = sched_fifo_priority;
+    //     int ret = sched_setscheduler(getpid(), policy[1], &param_fifo);
+    //     if(ret == -1){
+    //         perror("sched_setscheduler");
+    //         exit(EXIT_FAILURE);
+    //     }
         
-        struct sched_param param2;
-        int prio2 = sched_getparam(getpid(), &param2);
-        int policy2 = sched_getscheduler(getpid());
-        printf("Policy of Child Process 2 (SCHED_FIFO) is: %d\n", policy2);
-        printf("Priority of Child Process 2 (SCHED_FIFO) is: %d\n", param2.sched_priority);
+    //     struct sched_param param2;
+    //     int prio2 = sched_getparam(getpid(), &param2);
+    //     int policy2 = sched_getscheduler(getpid());
+    //     printf("Policy of Child Process 2 (SCHED_FIFO) is: %d\n", policy2);
+    //     printf("Priority of Child Process 2 (SCHED_FIFO) is: %d\n", param2.sched_priority);
  
-	    fflush(stdout);
-        if(execl("/bin/sh", "bash", paths[1], NULL) == -1){
-            printf("Exec call failed\n");
-        }
-    }
+	//     fflush(stdout);
+    //     if(execl("/bin/sh", "bash", paths[1], NULL) == -1){
+    //         printf("Exec call failed\n");
+    //     }
+    // }
 
-    if( clock_gettime( CLOCK_REALTIME, &start[2]) == -1 ) {
+    // if( clock_gettime( CLOCK_REALTIME, &start[2]) == -1 ) {
+    //     perror( "clock gettime" );
+    //     exit( EXIT_FAILURE );
+    // }
+    // children[2] = fork();
+    // if(children[2] == 0){
+    //     param_rr.sched_priority = sched_rr_priority;
+    //     int ret = sched_setscheduler(getpid(), policy[2], &param_rr);
+    //     if(ret == -1){
+    //         perror("sched_setscheduler");
+    //         exit(EXIT_FAILURE);
+    //     }
+        
+    //     struct sched_param param3;
+    //     int prio3 = sched_getparam(getpid(), &param3);
+    //     int policy3 = sched_getscheduler(getpid());
+    //     printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
+    //     printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
+	//     fflush(stdout);
+    //     if(execl("/bin/sh", "bash", paths[2], NULL) == -1){
+    //         printf("Exec call failed\n");
+    //     }
+    // }
+    int test;
+    waitpid(children[0], &test, 0);
+    if( clock_gettime( CLOCK_REALTIME, &stop[0]) == -1 ) {
         perror( "clock gettime" );
         exit( EXIT_FAILURE );
     }
-    children[2] = fork();
-    if(children[2] == 0){
-        param_rr.sched_priority = sched_rr_priority;
-        int ret = sched_setscheduler(getpid(), policy[2], &param_rr);
-        if(ret == -1){
-            perror("sched_setscheduler");
-            exit(EXIT_FAILURE);
-        }
-        
-        struct sched_param param3;
-        int prio3 = sched_getparam(getpid(), &param3);
-        int policy3 = sched_getscheduler(getpid());
-        printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
-        printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
-	    fflush(stdout);
-        if(execl("/bin/sh", "bash", paths[2], NULL) == -1){
-            printf("Exec call failed\n");
-        }
-    }
-
-    int* test = malloc(sizeof(int));
-    for (int i = 0; i < 3; i++ ) {   //Using waitpid() to wait for a particular child process and 
-        waitpid(children[i], test, 0);
-        if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
-            perror( "clock gettime" );
-            exit( EXIT_FAILURE );
-        }
-    }
+    // int* test = malloc(sizeof(int));
+    // for (int i = 0; i < 3; i++ ) {   //Using waitpid() to wait for a particular child process and 
+    //     waitpid(children[i], test, 0);
+    //     if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
+    //         perror( "clock gettime" );
+    //         exit( EXIT_FAILURE );
+    //     }
+    // }
 
     double time_OTHER, time_FIFO, time_RR;
 
