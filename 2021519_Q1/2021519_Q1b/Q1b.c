@@ -20,7 +20,9 @@ int main(int argc, char **argv) {
     }
     children[0] = fork();
     if(children[0] == 0){
-        int ret = nice(10);
+	printf("HI BEFORE NICE");
+        int ret = nice(-6);
+	printf("HI AFTER NICE");
         if(ret == -1){
             printf("Error in nice\n");
             fflush(stdout);
@@ -32,6 +34,7 @@ int main(int argc, char **argv) {
         long long int n = (pow(2,32)-1);
         for(long long int i = 1; i <= n;i++){
         }
+	printf("HI BEFORE EXEC");
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -43,7 +46,7 @@ int main(int argc, char **argv) {
     }
     children[1] = fork();
     if(children[1] == 0){
-        param_fifo.sched_priority = 10;
+        param_fifo.sched_priority = 89;
         int ret = sched_setscheduler(getpid(), policy[1], &param_fifo);
         if(ret == -1){
             perror("sched_setscheduler");
@@ -69,7 +72,7 @@ int main(int argc, char **argv) {
     }
     children[2] = fork();
     if(children[2] == 0){
-        param_rr.sched_priority = 10;
+        param_rr.sched_priority = 54;
         int ret = sched_setscheduler(getpid(), policy[2], &param_rr);
         if(ret == -1){
             perror("sched_setscheduler");
