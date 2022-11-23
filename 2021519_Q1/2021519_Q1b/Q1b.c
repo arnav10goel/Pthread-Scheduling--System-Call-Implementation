@@ -36,9 +36,7 @@ int main(int argc, char **argv) {
         else{
             printf("Nice value of Child Process 1 (SCHED_OTHER) is: %d\n", ret);
         }
-        long long int n = (pow(2,32)-1);
-        for(long long int i = 1; i <= n;i++){
-        }
+        
         int rc = sched_getscheduler(getpid());
         if(rc == -1){
             printf("Error in sched_getscheduler\n");
@@ -48,16 +46,12 @@ int main(int argc, char **argv) {
         }
         struct sched_param param0;
         int prio1 = sched_getparam(getpid(), &param0);
-       
         printf("Priority of Child Process 1 (SCHED_OTHER) is: %d\n", param0.sched_priority);
-        printf("Return value of 1st sched_getparam is: %d\n", prio1);
+
 	    fflush(stdout);
-        if(execl("/bin/ls", "ls", NULL) == -1){
+        if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
             printf("Exec call failed\n");
         }
-        // if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
-        //     printf("Exec call failed\n");
-        // }
     }
 
     if( clock_gettime( CLOCK_REALTIME, &start[1]) == -1 ) {
@@ -72,27 +66,17 @@ int main(int argc, char **argv) {
             perror("sched_setscheduler");
             exit(EXIT_FAILURE);
         }
-        else{
-            printf("Input Policy of Child Process 2 is: %d\n", policy[1]);
-            printf("Input Priority of Child Process 2 is: %d\n", param_fifo.sched_priority);
-           
-        }
-        long long int n = (pow(2,32)-1);
-        for(long long int i = 1; i <= n;i++){
-        }
+        
         struct sched_param param2;
         int prio2 = sched_getparam(getpid(), &param2);
         int policy2 = sched_getscheduler(getpid());
         printf("Policy of Child Process 2 (SCHED_FIFO) is: %d\n", policy2);
         printf("Priority of Child Process 2 (SCHED_FIFO) is: %d\n", param2.sched_priority);
  
-	fflush(stdout);
-        if(execl("/bin/ls", "ls", NULL) == -1){
+	    fflush(stdout);
+        if(execl("/bin/sh", "bash", paths[1], NULL) == -1){
             printf("Exec call failed\n");
         }
-        // if(execl("/bin/sh", "bash", paths[1], NULL) == -1){
-        //     printf("Exec call failed\n");
-        // }
     }
 
     if( clock_gettime( CLOCK_REALTIME, &start[2]) == -1 ) {
@@ -107,27 +91,17 @@ int main(int argc, char **argv) {
             perror("sched_setscheduler");
             exit(EXIT_FAILURE);
         }
-        else{
-            printf("Input Policy of Child Process 3 is: %d\n", policy[2]);
-            printf("Input Priority of Child Process 3 is: %d\n", param_rr.sched_priority);
-
-        }
-        long long int n = (pow(2,32)-1);
-        for(long long int i = 1; i <= n;i++){
-        }
+        
         struct sched_param param3;
         int prio3 = sched_getparam(getpid(), &param3);
         int policy3 = sched_getscheduler(getpid());
         printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
         printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
         printf("Return value of 3rd get_param is: %d\n", prio3);
-	fflush(stdout);
-        if(execl("/bin/ls", "ls", NULL) == -1){
+	    fflush(stdout);
+        if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
             printf("Exec call failed\n");
         }
-        // if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
-        //     printf("Exec call failed\n");
-        // }
     }
 
     int* test = malloc(sizeof(int));
