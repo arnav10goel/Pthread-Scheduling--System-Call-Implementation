@@ -1,6 +1,10 @@
 #!/bin/bash
 echo "Starting Compilation Part 1"
+pwd
+cd ..
+pwd
 cd ~
+pwd
 cd stock_kernel_1/stock_kernel/linux-5.19.8
 sudo make -j$(nproc)
 sudo make modules
