@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
     }
     children[0] = fork();
     if(children[0] == 0){
-        int ret = nice(-6);
+        int ret = nice(nice_val);
         if(ret == -1){
             printf("Error in nice\n");
            
@@ -46,11 +46,10 @@ int main(int argc, char **argv) {
         else{
             printf("Policy of Child Process 1 (SCHED_OTHER) is: %d\n", rc);
         }
-        struct sched_param param;
-        int prio1 = sched_getparam(getpid(), &param);
-        int policy1 = sched_getscheduler(getpid());
-        printf("Policy of Child Process 2 (SCHED_OTHER) is: %d\n", policy1);
-        printf("Priority of Child Process 1 (SCHED_OTHER) is: %d\n", param.sched_priority);
+        struct sched_param param0;
+        int prio1 = sched_getparam(getpid(), &param0);
+       
+        printf("Priority of Child Process 1 (SCHED_OTHER) is: %d\n", param0.sched_priority);
         printf("Return value of 1st sched_getparam is: %d\n", prio1);
 	    fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
@@ -67,15 +66,15 @@ int main(int argc, char **argv) {
     }
     children[1] = fork();
     if(children[1] == 0){
-        param_fifo.sched_priority = 89;
+        param_fifo.sched_priority = sched_fifo_priority;
         int ret = sched_setscheduler(getpid(), policy[1], &param_fifo);
         if(ret == -1){
             perror("sched_setscheduler");
             exit(EXIT_FAILURE);
         }
         else{
-            printf("Policy of Child Process 2 is: %d\n", policy[1]);
-            printf("Priority of Child Process 2 is: %d\n", param_fifo.sched_priority);
+            printf("Input Policy of Child Process 2 is: %d\n", policy[1]);
+            printf("Input Priority of Child Process 2 is: %d\n", param_fifo.sched_priority);
            
         }
         long long int n = (pow(2,32)-1);
@@ -86,8 +85,8 @@ int main(int argc, char **argv) {
         int policy2 = sched_getscheduler(getpid());
         printf("Policy of Child Process 2 (SCHED_FIFO) is: %d\n", policy2);
         printf("Priority of Child Process 2 (SCHED_FIFO) is: %d\n", param2.sched_priority);
-        printf("Priority of Child Process 2 is: %d\n", param_rr.sched_priority);
-	    fflush(stdout);
+ 
+	fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
@@ -102,15 +101,15 @@ int main(int argc, char **argv) {
     }
     children[2] = fork();
     if(children[2] == 0){
-        param_rr.sched_priority = 54;
+        param_rr.sched_priority = sched_rr_priority;
         int ret = sched_setscheduler(getpid(), policy[2], &param_rr);
         if(ret == -1){
             perror("sched_setscheduler");
             exit(EXIT_FAILURE);
         }
         else{
-            printf("Policy of Child Process 3 is: %d\n", policy[2]);
-            printf("Priority of Child Process 3 is: %d\n", param_rr.sched_priority);
+            printf("Input Policy of Child Process 3 is: %d\n", policy[2]);
+            printf("Input Priority of Child Process 3 is: %d\n", param_rr.sched_priority);
 
         }
         long long int n = (pow(2,32)-1);
@@ -122,7 +121,7 @@ int main(int argc, char **argv) {
         printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
         printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
         printf("Return value of 3rd get_param is: %d\n", prio3);
-	    fflush(stdout);
+	fflush(stdout);
         if(execl("/bin/ls", "ls", NULL) == -1){
             printf("Exec call failed\n");
         }
