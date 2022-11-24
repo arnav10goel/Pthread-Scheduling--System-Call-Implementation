@@ -1,0 +1,11 @@
+--- stock_kernel/linux-5.19.8/Makefile	2022-09-08 14:54:08.000000000 +0530
++++ edited_kernel/linux-5.19.8/Makefile	2022-11-24 06:06:05.489977591 +0530
+@@ -1100,7 +1100,7 @@
+ export MODULES_NSDEPS := $(extmod_prefix)modules.nsdeps
+ 
+ ifeq ($(KBUILD_EXTMOD),)
+-core-y			+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/
++core-y			+= kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ kernel_2d_memcpy/
+ core-$(CONFIG_BLOCK)	+= block/
+ core-$(CONFIG_IO_URING)	+= io_uring/
+ 
