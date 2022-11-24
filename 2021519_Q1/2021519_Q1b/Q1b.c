@@ -22,6 +22,10 @@ int main(int argc, char **argv) {
     printf("Enter priority for Process C - SCHED_RR (value b/w 1 and 99): ");
     scanf("%d", &sched_rr_priority);
     
+    if( clock_gettime( CLOCK_REALTIME, &start[0]) == -1 ) {
+        perror( "clock gettime" );
+        exit( EXIT_FAILURE );
+    }
     children[0] = fork();
     if(children[0] < 0){
         printf("Error in forking child 1\n");
@@ -48,16 +52,16 @@ int main(int argc, char **argv) {
         printf("Priority of Child Process 1 (SCHED_OTHER) is: %d\n", param0.sched_priority);
 
 	    fflush(stdout);
-        if( clock_gettime( CLOCK_REALTIME, &start[0]) == -1 ) {
-            perror( "clock gettime" );
-            exit( EXIT_FAILURE );
-        }
+        
         if(execl("/bin/sh", "bash", paths[0], NULL) == -1){
             printf("Exec call failed\n");
         }
     }
     else{
-        
+        if( clock_gettime( CLOCK_REALTIME, &start[1]) == -1 ) {
+            perror( "clock gettime" );
+            exit( EXIT_FAILURE );
+        }
         children[1] = fork();
         if(children[1] < 0){
             printf("Error in forking child 2\n");
@@ -77,16 +81,16 @@ int main(int argc, char **argv) {
             printf("Priority of Child Process 2 (SCHED_FIFO) is: %d\n", param2.sched_priority);
     
             fflush(stdout);
-            if( clock_gettime( CLOCK_REALTIME, &start[1]) == -1 ) {
-            perror( "clock gettime" );
-            exit( EXIT_FAILURE );
-            }
+            
             if(execl("/bin/sh", "bash", paths[1], NULL) == -1){
                 printf("Exec call failed\n");
             }
         }
         else{
-            
+            if( clock_gettime( CLOCK_REALTIME, &start[2]) == -1 ) {
+                perror( "clock gettime" );
+                exit( EXIT_FAILURE );
+            }
             children[2] = fork();
             if(children[2] == 0){
                 param_rr.sched_priority = sched_rr_priority;
@@ -102,10 +106,7 @@ int main(int argc, char **argv) {
                 printf("Policy of Child Process 3 (SCHED_RR) is: %d\n", policy3);
                 printf("Priority of Child Process 3 (SCHED_RR) is: %d\n", param3.sched_priority);
                 fflush(stdout);
-                if( clock_gettime( CLOCK_REALTIME, &start[2]) == -1 ) {
-                    perror( "clock gettime" );
-                    exit( EXIT_FAILURE );
-                }
+                
                 if(execl("/bin/sh", "bash", paths[2], NULL) == -1){
                     printf("Exec call failed\n");
                 }
@@ -114,22 +115,14 @@ int main(int argc, char **argv) {
     }
 
     int* test = malloc(sizeof(int));
-    for (int i = 0; i < 3; i++ ) {   //Using waitpid() to wait for a particular child process and 
+    for (int i = 2; i >= 0; i-- ) {   //Using waitpid() to wait for a particular child process and 
         waitpid(children[i], test, 0);
         if( clock_gettime( CLOCK_REALTIME, &stop[i]) == -1 ) {
-            perror( "clock gettime" );
+            perror("clock gettime");
             exit( EXIT_FAILURE );
         }
     }
-
     double time_OTHER, time_FIFO, time_RR;
-
-    printf("Start time for SCHED_OTHER: %f\n", start[0].tv_sec + start[0].tv_nsec/1000000000.0);
-    printf("Stop time for SCHED_OTHER: %f\n", stop[0].tv_sec + stop[0].tv_nsec/1000000000.0);
-    printf("Start time for SCHED_FIFO: %f\n", start[1].tv_sec + start[1].tv_nsec/1000000000.0);
-    printf("Stop time for SCHED_FIFO: %f\n", stop[1].tv_sec + stop[1].tv_nsec/1000000000.0);
-    printf("Start time for SCHED_RR: %f\n", start[2].tv_sec + start[2].tv_nsec/1000000000.0);
-    printf("Stop time for SCHED_RR: %f\n", stop[2].tv_sec + stop[2].tv_nsec/1000000000.0);
 
     time_OTHER = ( stop[0].tv_sec - start[0].tv_sec ) + ( stop[0].tv_nsec - start[0].tv_nsec ) / 1000000000.0;
     time_FIFO = ( stop[1].tv_sec - start[1].tv_sec ) + ( stop[1].tv_nsec - start[1].tv_nsec ) / 1000000000.0;
